@@ -21,6 +21,28 @@ spec:
 
 ---
 
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  labels:
+#    app: speedtest
+#  name: speedtest
+#spec:
+#  ports:
+#    - port: 3000
+      # By default and for convenience, the `targetPort` is set to
+      # the same value as the `port` field.
+#      targetPort: 3000
+      # Optional field
+      # By default and for convenience, the Kubernetes control plane
+      # will allocate a port from a range (default: 30000-32767)
+#      nodePort: 30007
+
+#  selector:
+#    app: speedtest
+#  sessionAffinity: None
+#  type: NodePort
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -29,36 +51,29 @@ metadata:
   name: speedtest
 spec:
   ports:
-    - port: 3000
-      # By default and for convenience, the `targetPort` is set to
-      # the same value as the `port` field.
-      targetPort: 3000
-      # Optional field
-      # By default and for convenience, the Kubernetes control plane
-      # will allocate a port from a range (default: 30000-32767)
-      nodePort: 30007
-
+  - port: 80
+    protocol: TCP
+    targetPort: 3000
   selector:
     app: speedtest
   sessionAffinity: None
-  type: NodePort
-
-
+  type: ClusterIP
 #---
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-#  name: speedtest
-#spec:
-#  ingressClassName: nginx
-#  rules:
-#  - host: sss.devopscicd.cc
-#    http:
-#      paths:
-#      - path: /
-#        pathType: ImplementationSpecific
-#        backend:
-#          service:
-#            name: speedtest
-#            port:
-#              number: 3000#
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: speedtest
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: sss.devopscicd.cc
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: speedtest
+            port:
+              number: 3000
+
