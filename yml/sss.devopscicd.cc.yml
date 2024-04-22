@@ -64,7 +64,7 @@ kind: Ingress
 metadata:
   name: speedtest
 spec:
-  ingressClassName: nginx
+  ingressClassName: ""
   rules:
   - host: sss.devopscicd.cc
     http:
